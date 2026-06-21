@@ -24,14 +24,34 @@ jobs:
         distribution: 'zulu'
         java-version: '21'
 
-    - name: Web2APK Yapılandırma
+    - name: Web2APK Hazirlik
       run: |
         npm install @capacitor/core @capacitor/android @capacitor/cli
         mkdir -p www
-        # Boş bir index.html oluştur ki capacitor hata vermesin
         echo '<html><body>Loading...</body></html>' > www/index.html
+        
+        # Paket ismi ve url duzeltildi
+        echo '{"appId": "com.destroystudios.serhatpinar", "appName": "Serhat & Pınar Erkek Kuaförü Randevu", "webDir": "www", "server": {"url": "https://serhatpinarerkekkuaforu.web.app", "cleartext": true}}' > capacitor.config.json
+        
         npx cap add android || true
         npx cap sync android
+        
+        # XML engelini kaldır
+        rm -rf android/app/src/main/res/mipmap-anydpi-v26
+        
+        # İkonları zorla yerleştir
+        if [ -f icon.png ]; then
+          for size in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            target_dir="android/app/src/main/res/mipmap-$size"
+            mkdir -p $target_dir
+            cp icon.png $target_dir/ic_launcher.png
+            cp icon.png $target_dir/ic_launcher_round.png
+            cp icon.png $target_dir/ic_launcher_foreground.png
+          done
+        else
+          echo "HATA: icon.png bulunamadi!"
+          exit 1
+        fi
 
     - name: Build APK
       run: |
