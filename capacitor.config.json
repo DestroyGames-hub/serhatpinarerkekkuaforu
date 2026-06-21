@@ -1,0 +1,9 @@
+{
+  "appId": "com.serhatpinar.kuafor",
+  "appName": "Serhat & Pınar Erkek Kuaförü",
+  "webDir": "www",
+  "server": {
+    "url": "https://serhatpinarerkekkuaforu.web.app",
+    "cleartext": true
+  }
+}

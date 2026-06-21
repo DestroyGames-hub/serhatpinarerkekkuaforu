@@ -24,10 +24,12 @@ jobs:
         distribution: 'zulu'
         java-version: '21'
 
-    - name: Install & Setup Android
+    - name: Web2APK Yapılandırma
       run: |
-        npm install
-        npm run build --if-present
+        npm install @capacitor/core @capacitor/android @capacitor/cli
+        mkdir -p www
+        # Boş bir index.html oluştur ki capacitor hata vermesin
+        echo '<html><body>Loading...</body></html>' > www/index.html
         npx cap add android || true
         npx cap sync android
 
